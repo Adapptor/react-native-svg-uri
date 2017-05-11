@@ -53,7 +53,7 @@ const POLYGON_ATTS = ['points'];
 const POLYLINE_ATTS = ['points'];
 
 const COMMON_ATTS = ['fill', 'fillOpacity', 'stroke', 'strokeWidth', 'strokeOpacity', 'strokeLinecap', 'strokeLinejoin',
-    'strokeDasharray', 'strokeDashoffset', 'x', 'y', 'rotate', 'scale', 'origin', 'originX', 'originY'];
+    'strokeDasharray', 'strokeDashoffset', 'x', 'y', 'rotate', 'scale', 'origin', 'originX', 'originY', 'transform'];
 
 let ind = 0;
 
@@ -170,6 +170,8 @@ class SvgUri extends Component{
     let componentAtts =  Array.from(attributes)
       .map(utils.camelCaseNodeName)
       .map(utils.removePixelsFromNodeValue)
+      .map(utils.parseTransforms)
+      .filter(({nodeName, nodeValue}) => (nodeName !== 'transform' || nodeValue != null))
       .filter(utils.getEnabledAttributes(enabledAttributes.concat(COMMON_ATTS)))
       .reduce((acc, {nodeName, nodeValue}) => ({
         ...acc,
